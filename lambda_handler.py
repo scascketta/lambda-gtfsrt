@@ -66,4 +66,4 @@ def lambda_handler(event, ctx):
     if url:
         return fetch_feed(url)
     else:
-        return {'error_message': 'Needs a URL param (vp_url or tu_url)'}
+        return {'error_message': 'Requires the `url` param'}
