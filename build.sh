@@ -6,7 +6,9 @@ rm -rf bundle bundle.zip
 
 mkdir -p bundle
 
+source .env/bin/activate
 pip install -r requirements.txt
+
 cp -r .env/lib/python2.7/site-packages/* bundle
 cp lambda_handler.py bundle
 
