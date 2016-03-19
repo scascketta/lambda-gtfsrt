@@ -1,12 +1,15 @@
 #!/usr/bin/env python
-
 import arrow
 import requests
 from google.transit import gtfs_realtime_pb2 as gtfsrt
 
+DEFAULT_URL = 'https://data.texas.gov/download/eiei-9rpf/application/octet-stream'
+
 
 def parse_vehicle_position(entity):
     v = entity.vehicle
+    if not v or v.ByteSize() == 0:
+        return None
 
     if v.timestamp != 0:
         return {
@@ -21,6 +24,9 @@ def parse_vehicle_position(entity):
 
 def parse_trip_update(entity):
     tu = entity.trip_update
+    if not tu or tu.ByteSize() == 0:
+        return None
+
     st_updates = []
     for stu in tu.stop_time_update:
         st_updates.append({
@@ -67,3 +73,7 @@ def lambda_handler(event, ctx):
         return fetch_feed(url)
     else:
         return {'error_message': 'Requires the `url` param'}
+
+
+if __name__ == '__main__':
+    print lambda_handler({'url': DEFAULT_URL}, None)
